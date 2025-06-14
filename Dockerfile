@@ -1,6 +1,6 @@
 # Start your Dockerfile with a FROM instruction.
 # Choose a base image that suits your application (e.g., a Python image on Debian 11 'bullseye').
-FROM python:3.9-slim-bullseye # <-- THIS LINE IS ESSENTIAL AND WAS MISSING
+FROM python:3.9-slim-bullseye 
 
 # --- START OF THE CORRECTED AND BROKEN-DOWN SECTION (from our previous discussion) ---
 
