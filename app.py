@@ -4,10 +4,9 @@ import pyodbc
 from config import Config
 
 app = Flask(__name__)
-CORS(app, resources={r"/api/*": {"origins": "*"}})  # Restrict origins in production
+CORS(app, resources={r"/api/*": {"origins": "*"}})
 
 def get_db_connection():
-    """Create a new database connection."""
     return pyodbc.connect(Config.CONNECTION_STRING)
 
 @app.route('/api/schools', methods=['GET'], strict_slashes=False)
