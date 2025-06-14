@@ -1,12 +1,17 @@
 #!/bin/bash
 set -e
-apt-get update
-curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add -
-curl https://packages.microsoft.com/config/ubuntu/20.04/prod.list > /etc/apt/sources.list.d/mssql-release.list
-apt-get update
-ACCEPT_EULA=Y apt-get install -y msodbcsql17 unixodbc
-dpkg -l | grep -E 'msodbcsql|unixodbc' || echo "Packages not found"
-odbcinst -j
-find /opt -name 'msodbcsql*.so' -print || echo "msodbcsql.so not found"
+apt-get update -y
+apt-get install -y unixodbc unixodbc-dev freetds-bin freetds-dev tdsodbc
+export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu/odbc:$LD_LIBRARY_PATH
+dpkg -l | grep -E 'unixodbc|freetds|tdsodbc' || echo "Packages not found"
+find / -name libtdsodbc.so -print 2>/dev/null || echo "libtdsodbc.so not found"
+find / -name libtdsS.so -print 2>/dev/null || echo "libtdsS.so not found"
+echo "[FreeTDS]" > /etc/odbcinst.ini
+echo "Description=FreeTDS Driver" >> /etc/odbcinst.ini
+echo "Driver=$(find / -name libtdsodbc.so -print -quit 2>/dev/null)" >> /etc/odbcinst.ini
+echo "Setup=$(find / -name libtdsS.so -print -quit 2>/dev/null)" >> /etc/odbcinst.ini
+echo "TDS_Version=7.2" >> /etc/odbcinst.ini
+cat /etc/freetds/freetds.conf
 cat /etc/odbcinst.ini
+odbcinst -j
 pip install -r requirements.txt
