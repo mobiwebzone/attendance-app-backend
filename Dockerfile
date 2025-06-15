@@ -48,4 +48,4 @@ EXPOSE 8000
 # Define the command to run your application when the container starts
 # Replace 'gunicorn app:app --bind 0.0.0.0:$PORT' with your actual start command
 
-CMD gunicorn --log-level debug app:app --bind 0.0.0.0:$PORT
+CMD gunicorn app:app --bind 0.0.0.0:$PORT
