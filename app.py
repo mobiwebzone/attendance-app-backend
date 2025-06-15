@@ -9,6 +9,10 @@ CORS(app, resources={r"/api/*": {"origins": "*"}})
 def get_db_connection():
     return pyodbc.connect(Config.CONNECTION_STRING)
 
+@app.route('/', methods=['GET'])
+def home():
+    return jsonify({'status': 'API is running', 'version': '1.0'})
+
 @app.route('/api/schools', methods=['GET'], strict_slashes=False)
 def get_schools():
     try:
